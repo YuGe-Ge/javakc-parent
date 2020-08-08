@@ -14,7 +14,9 @@ public interface ClientDao extends BaseDao<Client,String>, PagingAndSortingRepos
 
 //        @Query("delete  from Client  where mid=?1")
         public APICODE deleteByMidEquals(int mid);
-        public APICODE deleteById(int id);
+
+
+
 
 
 }

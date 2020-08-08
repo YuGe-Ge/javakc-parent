@@ -14,6 +14,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ClientService extends BaseService<ClientDao, Client> {
     @Autowired
@@ -28,17 +30,17 @@ public class ClientService extends BaseService<ClientDao, Client> {
 
     }
 
-    public APICODE deleteAll(){
-        clientDao.deleteAll();
+    public APICODE deleteAllBy(){
+
+        List<Client> list=clientDao.findAll();
+
+        for (int i=0;i<list.size();i++)
+        {
+            clientDao.deleteById(list.get(i).getId());
+
+        }
+
         return APICODE.OK();
     }
 
-    public APICODE deleteIds(int[] ids)
-    {
-        for (int i=0;i<ids.length;i++)
-        {
-            clientDao.deleteById(ids[i]);
-        }
-        return APICODE.OK();
-    }
 }

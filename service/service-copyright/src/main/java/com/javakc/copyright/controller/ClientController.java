@@ -26,6 +26,8 @@ public class ClientController {
     private ClientService clientService;
     @Autowired
     private ManageService manageService;
+    @Autowired
+    private ClientDao clientDao;
 
     @ApiOperation(value = "条件查询")
     @GetMapping("/query/{pageNo}/{pageSize}")
@@ -66,7 +68,7 @@ public class ClientController {
 
     @ApiOperation(value = "客户删除")
     @DeleteMapping("{id}")
-    public APICODE delete(@PathVariable int id){
+    public APICODE delete(@PathVariable String id){
 
 
        clientService.removeById(id);
@@ -77,15 +79,24 @@ public class ClientController {
     @ApiOperation(value = "清空")
     @DeleteMapping("/remove")
     public APICODE deleteAll(){
-        clientService.deleteAll();
+
+        List<Client> list=clientDao.findAll();
+        for (int i=0;i<list.size();i++){
+            clientService.removeById(list.get(i).getId());
+        }
+
+
         return APICODE.OK();
     }
 
     @ApiOperation(value = "Id数组删除")
     @DeleteMapping("/remove/ids")
-    public APICODE deleteByIds(@RequestBody int[] ids)
+    public APICODE deleteByIds(@RequestBody String[] ids)
     {
-        clientService.deleteIds(ids);
+        for(int i=0;i<ids.length;i++)
+        {
+            clientService.removeById(ids[i]);
+        }
         return APICODE.OK();
     }
 
