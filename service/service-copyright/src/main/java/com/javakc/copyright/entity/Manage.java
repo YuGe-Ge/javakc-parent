@@ -1,21 +1,25 @@
-package com.javakc.entity;
+package com.javakc.copyright.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
-public class Client {
+@Data
+@Entity
+@EntityListeners(AuditingEntityListener.class)
+@Table(name ="import_manage")
+public class Manage {
     @Id
     @Column(name = "id")
-    @GeneratedValue(generator = "generator_uuid")
-    @GenericGenerator(name = "generator_uuid", strategy = "uuid")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @ApiModelProperty(value = "书籍主键,采用hibernate的uuid生成32位字符串")
     private Integer id ;
     /** 版权 */
@@ -52,17 +56,26 @@ public class Client {
     private String introduce ;
     /** 创建时间 */
     @CreatedDate
-    @JsonFormat(pattern = "yyyy-MM-dd HH-mm-ss", timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @ApiModelProperty(value = "创建时间",example = "2020-12-12 12:12:12")
     @Column(name = "gmt_create",nullable = false, updatable = false)
     private Date gmtCreate ;
     /** 更新时间 */
     @LastModifiedDate
-    @JsonFormat(pattern = "yyyy-MM-dd HH-mm-ss", timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @ApiModelProperty(value = "修改时间",example = "2020-12-12 12:12:12")
     @Column(name = "gmt_modified",nullable = false, insertable = false)
     private Date gmtModified ;
-
-    private Manage manage;
-
+    /** 外键 */
+    @OneToMany(
+                        cascade ={
+                                CascadeType.PERSIST,//级联新增
+                                CascadeType.MERGE,//级联修改
+                                CascadeType.REMOVE//级联删除
+                        },
+            fetch = FetchType.EAGER//不采用延迟，直接查询
+    )
+    @JoinColumn(name = "mid",referencedColumnName = "id")
+    @ApiModelProperty(value = "外键")
+    private List<Client> clients ;
 }
