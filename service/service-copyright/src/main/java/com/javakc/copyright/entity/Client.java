@@ -24,6 +24,11 @@ public class Client {
     @ApiModelProperty(value = "书籍主键,采用hibernate的uuid生成32位字符串")
     private String id ;
 
+
+    @Column(name = "copyright")
+    @ApiModelProperty(value = "版权名")
+    private String copyright ;
+
     /** 姓名 */
     @Column(name = "name")
     @ApiModelProperty(value = "姓名")

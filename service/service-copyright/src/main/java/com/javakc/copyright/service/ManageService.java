@@ -29,10 +29,10 @@ public class ManageService extends BaseService<ManageDao, Manage> {
         return page;
 
     }
-    public APICODE delete(String id){
+    public APICODE delete(int id){
 
-
-        manageDao.deleteById(id);
+        clientDao.deleteByMidEquals(id);
+        manageDao.deleteByIdEquals(id);
         return APICODE.OK();
     }
 }

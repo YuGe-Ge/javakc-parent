@@ -16,7 +16,7 @@ import java.util.List;
 
 @Api(tags = "版权管理")
 @RestController
-@RequestMapping("/copyright")
+@RequestMapping("/copyright/manage")
 @CrossOrigin
 public class ManageController {
     @Autowired
@@ -28,8 +28,7 @@ public class ManageController {
     @GetMapping("/query/{pageNo}/{pageSize}")
     public APICODE query(@RequestBody MaQuery maQuery,int pageNo,int pageSize)
     {
-        pageSize=3;
-        pageNo=1;
+
         Page<Manage> page = manageService.findPageBook(maQuery, pageNo, pageSize);
         long totalElements = page.getTotalElements();
         List<Manage> ManageList = page.getContent();
@@ -45,17 +44,27 @@ public class ManageController {
         return APICODE.OK();
     }
 
+    @ApiOperation(value = "通过ID查询")
+    @GetMapping("/update/query/{id}")
+    public APICODE findById(@PathVariable int id)
+    {
+        Manage manage=manageService.getById(id);
+        return APICODE.OK().data("items",manage);
+    }
+
     @ApiOperation(value = "版权方修改")
     @PutMapping("/update/manage")
     public APICODE update(@RequestBody Manage manage){
 
-
+        manageService.saveOrUpdate(manage);
         return  APICODE.OK();
     }
 
     @ApiOperation(value = "版权方删除")
     @DeleteMapping("{id}")
     public APICODE delete(@PathVariable int id){
+
+
         manageService.removeById(id);
 
         return APICODE.OK();
