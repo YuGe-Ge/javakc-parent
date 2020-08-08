@@ -9,14 +9,16 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.util.Date;
+
 @Data
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(name ="import_chaptertest")
-public class ChapterTest {
+@Table(name ="import_chaptercontent")
+public class ChapterContent {
     /** 主键 */
     @Id
     @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @ApiModelProperty(value = "章节测试主键")
     private Integer id ;
     /** 章节名称 */
@@ -32,8 +34,8 @@ public class ChapterTest {
     @ApiModelProperty(value = "章节状态")
     private Integer chapterStatus ;
 
-    @ApiModelProperty(value = "章节内容")
     @Column(name = "chapter_content")
+    @ApiModelProperty(value = "章节内容")
     private String chapterContent ;
 
     /** 外键 */

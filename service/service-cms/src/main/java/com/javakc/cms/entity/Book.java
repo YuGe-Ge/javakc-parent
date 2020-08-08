@@ -10,6 +10,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Entity
@@ -73,6 +74,7 @@ public class Book {
     @ApiModelProperty(value = "授权状态")
     @Column(name = "authorization_status")
     private Integer authorizationStatus;
+
 
     @CreatedDate
     @JsonFormat(pattern = "yyyy-MM-dd HH-mm-ss", timezone = "GMT+8")
